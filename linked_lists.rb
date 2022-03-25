@@ -1,5 +1,4 @@
 class LinkedList
-  attr_reader :head
 
   def initialize
     @head = nil
@@ -25,6 +24,48 @@ class LinkedList
     head_holder = @head
     @head = node
     node.next_node = head_holder
+  end
+
+  def size
+    if @head.nil?
+      return 0
+    else 
+      count = 1
+      current_node = @head
+      while !current_node.next_node.nil?
+        count += 1
+        current_node = current_node.next_node
+      end
+    end
+    count
+  end
+  
+  def head
+    @head
+  end
+
+  def tail
+    if self.size == 1
+      return @head
+    else
+      current_node = @head
+      while !current_node.next_node.nil?
+        current_node = current_node.next_node
+      end
+      return current_node
+    end
+  end
+
+  # zero based indexing
+  def at(index)
+    if index > self.size-1 || index < 0
+      return 'ERROR'
+    end
+    current_node = @head
+    for i in (0...index)
+      current_node = current_node.next_node
+    end
+    current_node.value
   end
 
   def print_list
@@ -55,17 +96,29 @@ class Node
 end
 
 ll = LinkedList.new
+p ll.size
 ll.append(9)
+p ll.size
 ll.append(8)
 ll.append(8)
 ll.append(8)
 ll.append(8)
 ll.append(8)
 ll.append(7)
+p ll.size
 ll.print_list
 ll.prepend(10)
+p ll.size
 ll.print_list
 ll.prepend(5)
+p ll.size
 ll.print_list
 ll.append(8)
+p ll.size
 ll.print_list
+p ll.at(0)
+p ll.at(10)
+p ll.at(9)
+p ll.at(2)
+p ll.at(-1)
+p ll.at(2)
