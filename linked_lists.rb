@@ -68,13 +68,61 @@ class LinkedList
     current_node.value
   end
 
-  def print_list
+  def pop
+    if self.size <= 1
+      @head = nil
+      return 
+    end
     current_node = @head
+    trailing_node = nil
     while !current_node.next_node.nil?
-      print "#{current_node.value}--->"
+      trailing_node = current_node
       current_node = current_node.next_node
     end
-    print "#{current_node.value}\n"
+    trailing_node.next_node = nil
+  end
+
+  def contains?(value)
+    if size <= 0
+      p 'empty list'
+      return false
+    end
+    current_node = @head
+    for i in (0...size)
+      if current_node.value == value
+        p 'found it!' 
+        return true
+      end
+      current_node = current_node.next_node
+    end
+    p 'couldn\'t be found'
+    return false
+  end
+
+  def find(value)
+    if size <= 0
+      return nil
+    end
+    current_node = @head
+    for i in (0...size)
+      if current_node.value == value
+        return i
+      end
+      current_node = current_node.next_node
+    end
+    return nil
+  end
+
+  def to_s
+    if self.size == 0
+      return
+    end
+    current_node = @head
+    while !current_node.next_node.nil?
+      print "(#{current_node.value}) -> "
+      current_node = current_node.next_node
+    end
+    print "(#{current_node.value})\n"
   end
 end
 
@@ -96,29 +144,14 @@ class Node
 end
 
 ll = LinkedList.new
-p ll.size
-ll.append(9)
-p ll.size
-ll.append(8)
-ll.append(8)
-ll.append(8)
-ll.append(8)
-ll.append(8)
-ll.append(7)
-p ll.size
-ll.print_list
-ll.prepend(10)
-p ll.size
-ll.print_list
-ll.prepend(5)
-p ll.size
-ll.print_list
-ll.append(8)
-p ll.size
-ll.print_list
-p ll.at(0)
-p ll.at(10)
-p ll.at(9)
-p ll.at(2)
-p ll.at(-1)
-p ll.at(2)
+p ll.find(0)
+ll.append(1)
+p ll.find(1)
+ll.append(2)
+ll.append(3)
+p ll.find(3)
+
+ll.append(4)
+ll.append(5)
+p ll.find(5)
+p ll.find(6)
