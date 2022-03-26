@@ -124,6 +124,54 @@ class LinkedList
     end
     print "(#{current_node.value})\n"
   end
+
+  def insert_at(value, index)
+    if size == 0
+      p 'ERROR'
+      return
+    end
+    if index == 0
+      prepend(value)
+    elsif index == size - 1
+      append(value)
+    elsif index > size - 1 || index.negative?
+      p "ERROR"
+      return
+    else
+      current_node = @head
+      trailing_node = nil
+      for i in (0...index)
+        trailing_node = current_node
+        current_node = current_node.next_node
+      end
+      new_node = Node.new(value)
+      trailing_node.next_node = new_node
+      new_node.next_node = current_node
+    end
+  end
+
+  def remove_at(index)
+    if size == 0
+      p 'ERROR'
+      return
+    end
+    if index == 0
+      @head = @head.next_node
+    elsif index == size - 1
+      pop
+    elsif index > size - 1 || index.negative?
+      p 'ERROR'
+      return
+    else
+      current_node = @head
+      trailing_node = nil
+      for i in (0...index)
+        trailing_node = current_node
+        current_node = current_node.next_node
+      end
+      trailing_node.next_node = current_node.next_node
+    end
+  end
 end
 
 class Node
@@ -144,14 +192,17 @@ class Node
 end
 
 ll = LinkedList.new
-p ll.find(0)
+ll.remove_at(1)
+ll.append(0)
 ll.append(1)
-p ll.find(1)
 ll.append(2)
 ll.append(3)
-p ll.find(3)
-
 ll.append(4)
 ll.append(5)
-p ll.find(5)
-p ll.find(6)
+ll.to_s
+ll.remove_at(4)
+ll.to_s
+ll.remove_at(4)
+ll.to_s
+ll.remove_at(1)
+ll.to_s
