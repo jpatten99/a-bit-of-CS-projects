@@ -1,10 +1,11 @@
 class Node
-  attr_reader :x_coordinate, :y_coordinate, :level
+  attr_reader :x_coordinate, :y_coordinate, :level, :parent
 
-  def initialize(x_coordinate, y_coordinate, level = nil)
+  def initialize(x_coordinate, y_coordinate, level = nil, parent = nil)
     @x_coordinate = x_coordinate
     @y_coordinate = y_coordinate
     @level = level
+    @parent = parent
   end
 
 end
@@ -45,7 +46,7 @@ class KnightsTravail
   def make_next_moves(node)
     next_moves = []
     for i in 0..7 do
-      next_node = Node.new(node.x_coordinate + NEXT_MOVES_X[i], node.y_coordinate + NEXT_MOVES_Y[i], node.level + 1)
+      next_node = Node.new(node.x_coordinate + NEXT_MOVES_X[i], node.y_coordinate + NEXT_MOVES_Y[i], node.level + 1,  node)
       if valid_node?(next_node) && !@visited.include?(next_node)
         next_moves.push(next_node)
         @visited.push(next_node)
@@ -65,6 +66,7 @@ class KnightsTravail
       holder = queue.shift
       if holder.x_coordinate == x_2 && holder.y_coordinate == y_2
         p "Steps needed from [#{x_1}, #{y_1}] to [#{x_2}, #{y_2}]: #{holder.level}"
+        print_path(holder)
         return holder.level
       end
       next_moves = make_next_moves(holder)
@@ -74,7 +76,20 @@ class KnightsTravail
       end
     end
   end
+
+  def print_path(node)
+    path = []
+    path.push(node)
+    while !node.parent.nil?
+      node = node.parent
+      path.push(node)
+    end
+    path.reverse!
+    path.each do |point|
+      puts "[#{point.x_coordinate}, #{point.y_coordinate}]"
+    end
+  end
 end
 
 test = KnightsTravail.new
-test.find_path(1, 1, 4, 8)
+test.find_path(1, 1, 8, 8)
